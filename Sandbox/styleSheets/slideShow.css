@@ -1,0 +1,68 @@
+/* FOR THE SALE ITEM SLIDESHOW */
+
+#slideShowContainer {
+	position:relative;
+	display:block;
+}
+
+ul.showCase {
+	border:1px solid #BCBCBC;
+	margin:0px;
+	margin-bottom:25px;
+	overflow:hidden;
+	height:140px;
+	list-style:none;
+}
+
+ul.showCase li.showCaseProduct {
+	padding:11px 12px;
+}
+
+.showCaseSaleImage {
+	height:120px;
+	overflow:hidden;
+	position:relative;
+}
+
+.showCaseSaleImage table {
+	width:100%;
+	padding-left:1px; /* Fix: stop image shifting left */
+}
+
+.showCaseDetails {
+	width:394px;
+	margin-left:15px;
+	padding:15px 20px;
+	background:#FFFFFF url(../styleImages/backgrounds/latestProdBg.gif) repeat-x scroll center top;
+	border-top:1px solid #D6D6D6;
+}
+
+.showCaseTitle {
+	margin-bottom:10px;
+}
+
+.showCaseTitle a {
+	line-height:1.1em;
+}
+
+.saleDesc p {
+	margin-bottom:12px;
+}
+
+.saleTag span {
+	font-size:o,8em;
+	color:#074F92;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-style:italic;
+}
+
+.paused {
+	width:48px;
+	height:48px;
+	position:absolute;
+	top:95px;
+	right:0px;
+	background:url(../styleImages/icons/pause.png) no-repeat center;
+	display:none;
+	z-index:10;
+}
