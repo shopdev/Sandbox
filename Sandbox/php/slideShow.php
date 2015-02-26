@@ -5,16 +5,18 @@
 ##########################################################################################################################
 
 	This file builds an unordered list from your store's items that are marked on sale.
-	
+
 	1.1.R : Changed from direct output to using the templating system.
-	
+
 	Author: ShopDev
 	Written For: CubeCart V4
 	Version: 1.1.R
 	Release Date: 27th February 2009
-	
+
 ##########################################################################################################################
 */
+
+$skin_name = "Sandbox";
 
 ## include required files
 require_once ("../../../ini.inc.php");
@@ -33,7 +35,7 @@ $box_content = new XTemplate("..".CC_DS."styleTemplates".CC_DS."boxes".CC_DS."sl
 
 ## get store configuration
 $config = fetchDbConfig("config");
-	
+
 ## read from the cache if available
 $cache = new cache("boxes.slideShow");
 $slideShow = $cache->readCache();
@@ -59,55 +61,55 @@ if (!$cache->cacheStatus) {
 
 ## if sale mode is enabled *and* there are items on sale
 if ($slideShow && $config['saleMode'] > 0) {
-	
+
 	## initialize the salePrice variable
 	$salePrice = 0;
-	
+
 	## get the skin name
 	$box_content->assign("SKIN", $skin_name);
-	
+
 	## for each product on sale
 	for ($i=0; $i<count($slideShow); $i++){
-		
+
 		if (($val = prodAltLang($slideShow[$i]['productId'])) == true) {
 			$slideShow[$i]['name'] = $val['name'];
 		}
-		
+
 		## get the name and product ID
 		$saleProd["name"] = validHTML($slideShow[$i]['name']);
 		$saleProd["productId"] = $slideShow[$i]['productId'];
-		
+
 		## get the image from the database here (rather than using getImg.php to lookup the ID) since the results are cached
 		$imgRootPath = imgPath($slideShow[$i]['image'],$thumb=0,$path="root");
 		$imgRelPath	= imgPath($slideShow[$i]['image'],$thumb=0,$path="rel");
-		
+
 		if (file_exists($imgRootPath) && !empty($slideShow[$i]['image'])) {
 			$saleProd["image"] = $imgRelPath;
 		} else {
 			$saleProd["image"] = "skins/".$skin_name."/styleImages/thumb_nophoto.gif";
 		}
-		
+
 		if (strlen($slideShow[$i]['description']) > $config['productPrecis']) {
 			$saleProd["description"] = substr(strip_tags($slideShow[$i]['description']), 0, $config['productPrecis'])."&hellip;";
 		} else {
 			$saleProd["description"] = strip_tags($slideShow[$i]['description']);
 		}
-		
+
 		## calculate the savings
 		$salePrice = salePrice($slideShow[$i]['price'], $slideShow[$i]['sale_price']);
 		$saleProd["saving"] = priceFormat($slideShow[$i]['price'] - $salePrice,true);
-		
-		## parse for each product	
+
+		## parse for each product
 		$box_content->assign('DATA', $saleProd);
 		$box_content->parse("slide_show.li");
-		
+
 	}
-	
+
 	## parse the template
 	$box_content->parse("slide_show");
 	$box_content = $box_content->text("slide_show");
-	
+
 	## output the parsed template from *this* file
-	echo $box_content;		
+	echo $box_content;
 }
 ?>
